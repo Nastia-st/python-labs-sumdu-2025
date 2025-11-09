@@ -121,7 +121,7 @@ def print_menu() -> None:
     print("\n--- Головне Меню ---")
     print("1. Додати нового студента")
     print("2. Показати список всіх студентів")
-    print("3. Вийти з програми")
+    print("3. Видалити студента")
 
 def main() -> None:
     # головна функція, що керує роботою програми
@@ -136,7 +136,7 @@ def main() -> None:
             display_all_students(students_db)
             
         elif choice == '3':
-            print("Завершення роботи програми. До побачення!")
+            delete_student(students_db)
             break
             
         else:
