@@ -111,9 +111,28 @@ def display_all_students(db: dict):
         count += 1
 
 ### кінець частини коду Данила ###
+### частина коду Анастасії ###
 
+def delete_student(db: dict):
+    # видаляє студента з словника за ПІБ
+    print("\n--- Видалення студента ---")
+    name_to_delete = input("Введіть ПІБ студента, якого хочете видалити: ").strip()
 
+    if name_to_delete not in db:
+        print(f"Помилка: Студента '{name_to_delete}' не знайдено.")
+        return
 
+    # крок підтвердження
+    print(f"Ви впевнені, що хочете назавжди видалити студента: {name_to_delete}?")
+    confirmation = input("Введіть 'так' для підтвердження: ").strip().lower()
+
+    if confirmation == 'так':
+        del db[name_to_delete]
+        print(f"Студента '{name_to_delete}' успішно видалено.")
+    else:
+        print("Видалення скасовано.")
+
+### кінець частини коду Анастасії ###
 ### частина коду Данила ###
 
 def print_menu() -> None:
@@ -121,13 +140,14 @@ def print_menu() -> None:
     print("\n--- Головне Меню ---")
     print("1. Додати нового студента")
     print("2. Показати список всіх студентів")
-    print("3. Вийти з програми")
-
+    print("3. Видалити студента")
+    print("4. Вийти з програми")
+    
 def main() -> None:
     # головна функція, що керує роботою програми
     while True:
         print_menu()
-        choice = input("Введіть ваш вибір (1-3): ").strip()
+        choice = input("Введіть ваш вибір (1-4): ").strip()
         
         if choice == '1':
             add_student(students_db)
@@ -136,11 +156,14 @@ def main() -> None:
             display_all_students(students_db)
             
         elif choice == '3':
+            delete_student(students_db)
+            
+        elif choice == '4':
             print("Завершення роботи програми. До побачення!")
             break
             
         else:
-            print("Помилка: Неправильний вибір. Введіть число від 1 до 3.")
+            print("Помилка: Неправильний вибір. Введіть число від 1 до 4.")
 
 
 if __name__ == "__main__":
