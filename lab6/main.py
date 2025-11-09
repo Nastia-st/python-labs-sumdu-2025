@@ -111,6 +111,29 @@ def display_all_students(db: dict):
         count += 1
 
 ### кінець частини коду Данила ###
+### частина коду Софії ###
+
+def find_student(db: dict):
+    # шукає студента за ПІБ та виводить детальну інформацію
+    print("\n--- Пошук студента ---")
+    name_to_find = input("Введіть точне ПІБ студента для пошуку: ").strip()
+    
+    if name_to_find in db:
+        info = db[name_to_find]
+        print(f"\nЗнайдено студента: {name_to_find}")
+        print(f"  Група: {info['group']}")
+        print(f"  Курс: {info['course']}")
+        print("  Предмети та оцінки:")
+        if not info['subjects']:
+            print("    (немає)")
+        else:
+            for subject, grade in info['subjects'].items():
+                print(f"    - {subject}: {grade}")
+    else:
+        print(f"Студента з ПІБ '{name_to_find}' не знайдено.")
+
+### кінець частини коду Софії ###
+
 ### частина коду Анастасії ###
 
 def delete_student(db: dict):
@@ -140,14 +163,15 @@ def print_menu() -> None:
     print("\n--- Головне Меню ---")
     print("1. Додати нового студента")
     print("2. Показати список всіх студентів")
-    print("3. Видалити студента")
-    print("4. Вийти з програми")
+    print("3. Знайти студента за ПІБ")
+    print("4. Видалити студента")
+    print("5. Вийти з програми")
     
 def main() -> None:
     # головна функція, що керує роботою програми
     while True:
         print_menu()
-        choice = input("Введіть ваш вибір (1-4): ").strip()
+        choice = input("Введіть ваш вибір (1-5): ").strip()
         
         if choice == '1':
             add_student(students_db)
@@ -156,15 +180,17 @@ def main() -> None:
             display_all_students(students_db)
             
         elif choice == '3':
+            find_student(students_db)
+
+        elif choice == '4':
             delete_student(students_db)
             
-        elif choice == '4':
+        elif choice == '5':
             print("Завершення роботи програми. До побачення!")
             break
             
         else:
-            print("Помилка: Неправильний вибір. Введіть число від 1 до 4.")
-
+            print("Помилка: Неправильний вибір. Введіть число від 1 до 5.")
 
 if __name__ == "__main__":
     main()
