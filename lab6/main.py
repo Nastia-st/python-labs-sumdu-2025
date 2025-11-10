@@ -133,7 +133,84 @@ def find_student(db: dict):
         print(f"Студента з ПІБ '{name_to_find}' не знайдено.")
 
 ### кінець частини коду Софії ###
+### частина коду Микити ###
 
+def edit_student_info(db: dict) -> None:
+    # надає меню для редагування інформації про існуючого студента
+    print("\n--- Редагування даних студента ---")
+    name_to_edit = input("Введіть ПІБ студента, дані якого хочете змінити: ").strip()
+
+    if name_to_edit not in db:
+        print(f"Помилка: Студента '{name_to_edit}' не знайдено.")
+        return
+
+    student = db[name_to_edit]
+    print(f"Обрано студента: {name_to_edit}")
+
+    while True:
+        print("\nЩо ви хочете змінити?")
+        print("1. Змінити групу")
+        print("2. Змінити курс")
+        print("3. Змінити оцінку з предмету")
+        print("4. Повернутися до головного меню")
+        choice = input("Ваш вибір (1-4): ").strip()
+
+        if choice == '1':
+            # зміна групи
+            new_group = input(f"Введіть нову групу (поточна: {student['group']}): ").strip()
+            if new_group:
+                student['group'] = new_group
+                print(f"Групу оновлено на '{new_group}'.")
+            else:
+                print("Ввід скасовано, група не змінилась.")
+        
+        elif choice == '2':
+            # зміна курсу
+            try:
+                new_course_str = input(f"Введіть новий курс (поточний: {student['course']}): ").strip()
+                new_course = int(new_course_str)
+                if 1 <= new_course <= 6:
+                    student['course'] = new_course
+                    print(f"Курс оновлено на {new_course}.")
+                else:
+                    print("Помилка: Курс має бути від 1 до 6.")
+            except ValueError:
+                print("Помилка: Введіть коректне число.")
+        
+        elif choice == '3':
+            # зміна оцінки
+            print("Поточні предмети та оцінки:")
+            if not student['subjects']:
+                print("  (предметів немає)")
+                continue
+            
+            for subj, grad in student['subjects'].items():
+                print(f"  - {subj}: {grad}")
+            
+            subject_to_edit = input("Введіть назву предмету, оцінку з якого хочете змінити: ").strip()
+            
+            if subject_to_edit not in student['subjects']:
+                print(f"Помилка: Предмет '{subject_to_edit}' не знайдено у цього студента.")
+            else:
+                try:
+                    new_grade_str = input(f"Введіть нову оцінку (0-100) для '{subject_to_edit}': ").strip()
+                    new_grade = int(new_grade_str)
+                    if 0 <= new_grade <= 100:
+                        student['subjects'][subject_to_edit] = new_grade
+                        print("Оцінку успішно оновлено.")
+                    else:
+                        print("Помилка: Оцінка має бути від 0 до 100.")
+                except ValueError:
+                    print("Помилка: Введіть коректне число.")
+
+        elif choice == '4':
+            print(f"Завершено редагування для {name_to_edit}.")
+            break
+        
+        else:
+            print("Помилка: Невірний вибір. Введіть число від 1 до 4.")
+
+### кінець частини коду Микити ###
 ### частина коду Анастасії ###
 
 def delete_student(db: dict):
@@ -164,14 +241,15 @@ def print_menu() -> None:
     print("1. Додати нового студента")
     print("2. Показати список всіх студентів")
     print("3. Знайти студента за ПІБ")
-    print("4. Видалити студента")
-    print("5. Вийти з програми")
+    print("4. Редагувати дані студента")
+    print("5. Видалити студента")
+    print("6. Вийти з програми")
     
 def main() -> None:
     # головна функція, що керує роботою програми
     while True:
         print_menu()
-        choice = input("Введіть ваш вибір (1-5): ").strip()
+        choice = input("Введіть ваш вибір (1-6): ").strip()
         
         if choice == '1':
             add_student(students_db)
@@ -183,14 +261,17 @@ def main() -> None:
             find_student(students_db)
 
         elif choice == '4':
+            edit_student_info(students_db)
+
+        elif choice == '5':
             delete_student(students_db)
             
-        elif choice == '5':
+        elif choice == '6':
             print("Завершення роботи програми. До побачення!")
             break
             
         else:
-            print("Помилка: Неправильний вибір. Введіть число від 1 до 5.")
+            print("Помилка: Неправильний вибір. Введіть число від 1 до 6.")
 
 if __name__ == "__main__":
     main()
